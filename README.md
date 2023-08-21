@@ -1,11 +1,15 @@
 # redux-revokit
+
 redux-revokit
 
 ## ActionGenerator usage example
 
 ```ts
 import { ActionGenerator } from 'redux-revokit';
-import type { ActionsFromActionCreators, ObjectValuesUnion } from 'redux-revokit';
+import type {
+  ActionsFromActionCreators,
+  ObjectValuesUnion,
+} from 'redux-revokit';
 
 const namespace = '@search';
 
@@ -19,21 +23,21 @@ const initialState: InitialState = {
   items: [],
 };
 
-const regen = new ActionGenerator<typeof namespace, InitialState>(
+const generator = new ActionGenerator<typeof namespace, InitialState>(
   namespace,
   initialState,
 );
 
 // PROP
-const [IS_LOADED, isLoadedPropAction] = regen.createPropAction('isLoaded');
-const [ITEMS, itemsPropAction] = regen.createPropAction('items');
+const [IS_LOADED, isLoadedPropAction] = generator.createPropAction('isLoaded');
+const [ITEMS, itemsPropAction] = generator.createPropAction('items');
 
 // EVENT
 const [ITEMS_LOADED, itemsLoadedEventAction] =
-  regen.createEventAction('itemsLoaded');
+  generator.createEventAction('itemsLoaded');
 
 // RESET
-const [RESET, resetAction] = regen.createResetAction('reset');
+const [RESET, resetAction] = generator.createResetAction('reset');
 
 const types = {
   IS_LOADED,
@@ -49,9 +53,9 @@ const actions = {
   resetAction,
 };
 
-const reducer = regen.createReducer();
-const usePropsHook = regen.createHook(actions);
-const withPropsHoc = regen.createHoc(actions);
+const reducer = generator.createReducer();
+const usePropsHook = generator.createHook(actions);
+const withPropsHoc = generator.createHoc(actions);
 
 export {
   namespace,
