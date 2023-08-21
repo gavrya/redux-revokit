@@ -1,14 +1,10 @@
-import type { Store, AnyAction, Dispatch } from 'redux';
+import type { AnyAction, Dispatch } from 'redux';
 import type {
   TopicProps,
   Topic,
   RootTopic,
-  Effect,
-  NextMiddleware,
+  TopicMiddleware,
 } from './types/topicMiddleware';
-
-const ofType = (action: AnyAction, ...types: string[]) =>
-  types.includes(action.type);
 
 const runTopic = (props: TopicProps) => (topic: Topic) =>
   Promise.resolve(topic(props));
@@ -19,24 +15,15 @@ const combineTopics =
     Promise.all(topics.map(runTopic(props)));
 
 const createFakeDispatch =
-  (topic: RootTopic, dispatch: Dispatch) => (action: AnyAction) => {
-    if (!topic.isEjected) {
-      dispatch(action);
-    }
-  };
+  (topic: RootTopic, dispatch: Dispatch) => (action: AnyAction) =>
+    topic.isEjected ? action : dispatch(action);
 
 const createTopicMiddleware = () => {
   let rootTopic: RootTopic | null = null;
 
-  const middleware =
-    ({
-      dispatch,
-      getState,
-    }: {
-      dispatch: Dispatch;
-      getState: Store['getState'];
-    }) =>
-    (next: NextMiddleware) =>
+  const middleware: TopicMiddleware =
+    ({ dispatch, getState }) =>
+    (next) =>
     (action: AnyAction) => {
       next(action);
 
@@ -66,27 +53,4 @@ const createTopicMiddleware = () => {
   return middleware;
 };
 
-const createSwitchEffect = () => {
-  const callId: Record<string, any> = {};
-
-  return (name = 'default') => {
-    const newCallId = {};
-
-    callId[name] = newCallId;
-
-    return (effect: Effect) => {
-      if (newCallId === callId[name]) {
-        return effect();
-      }
-    };
-  };
-};
-
-export {
-  ofType,
-  runTopic,
-  combineTopics,
-  createFakeDispatch,
-  createTopicMiddleware,
-  createSwitchEffect,
-};
+export { runTopic, combineTopics, createFakeDispatch, createTopicMiddleware };

@@ -1,4 +1,4 @@
-import type { AnyAction, Dispatch, Store } from 'redux';
+import type { AnyAction, Dispatch, Store, Middleware } from 'redux';
 
 type TopicProps = {
   action: AnyAction;
@@ -8,12 +8,14 @@ type TopicProps = {
 
 type Topic = (props: TopicProps) => void | Promise<any>;
 
-interface RootTopic extends Topic {
+type RootTopic = Topic & {
   isEjected?: boolean;
-}
+};
 
 type Effect = () => void | Promise<any>;
 
-type NextMiddleware = (action: unknown) => unknown;
+type RunTopic = { run: (topic: Topic) => void };
 
-export type { TopicProps, Topic, RootTopic, Effect, NextMiddleware };
+type TopicMiddleware = Middleware & RunTopic;
+
+export type { TopicProps, Topic, RootTopic, Effect, TopicMiddleware };

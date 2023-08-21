@@ -21,11 +21,12 @@ const hotTopics = (
       store.dispatch(topicEjectedAction());
     }
 
-    rootTopic = combineTopics(...Object.values(topics));
+    const newTopics = Object.values(topics);
+    rootTopic = combineTopics(...newTopics);
 
     topicMiddleware.run(rootTopic);
 
-    if (Object.keys(topics).length > 0) {
+    if (newTopics.length > 0) {
       store.dispatch(topicInjectedAction());
     }
   };

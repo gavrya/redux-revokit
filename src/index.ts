@@ -2,11 +2,12 @@ export { ActionGenerator } from './ActionGenerator';
 export { hotReducers } from './hotReducers';
 export { hotTopics, TOPIC_INJECTED, TOPIC_EJECTED } from './hotTopics';
 export {
-  ofType,
+  runTopic,
   combineTopics,
   createTopicMiddleware,
-  createSwitchEffect,
 } from './topicMiddleware';
+
+export { ofType, createSwitchEffect } from './utils';
 
 export type {
   ObjectValuesUnion,

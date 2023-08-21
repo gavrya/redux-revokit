@@ -1,10 +1,3 @@
-var ofType = function (action) {
-    var types = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        types[_i - 1] = arguments[_i];
-    }
-    return types.includes(action.type);
-};
 var runTopic = function (props) { return function (topic) {
     return Promise.resolve(topic(props));
 }; };
@@ -18,9 +11,7 @@ var combineTopics = function () {
     };
 };
 var createFakeDispatch = function (topic, dispatch) { return function (action) {
-    if (!topic.isEjected) {
-        dispatch(action);
-    }
+    return topic.isEjected ? action : dispatch(action);
 }; };
 var createTopicMiddleware = function () {
     var rootTopic = null;
@@ -51,17 +42,4 @@ var createTopicMiddleware = function () {
     };
     return middleware;
 };
-var createSwitchEffect = function () {
-    var callId = {};
-    return function (name) {
-        if (name === void 0) { name = 'default'; }
-        var newCallId = {};
-        callId[name] = newCallId;
-        return function (effect) {
-            if (newCallId === callId[name]) {
-                return effect();
-            }
-        };
-    };
-};
-export { ofType, runTopic, combineTopics, createFakeDispatch, createTopicMiddleware, createSwitchEffect, };
+export { runTopic, combineTopics, createFakeDispatch, createTopicMiddleware };

@@ -10,9 +10,10 @@ var hotTopics = function (store, topicMiddleware) {
         if (rootTopic) {
             store.dispatch(topicEjectedAction());
         }
-        rootTopic = combineTopics.apply(void 0, Object.values(topics));
+        var newTopics = Object.values(topics);
+        rootTopic = combineTopics.apply(void 0, newTopics);
         topicMiddleware.run(rootTopic);
-        if (Object.keys(topics).length > 0) {
+        if (newTopics.length > 0) {
             store.dispatch(topicInjectedAction());
         }
     };
