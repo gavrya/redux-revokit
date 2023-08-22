@@ -56,9 +56,15 @@ class ActionGenerator<N extends string, S extends DataObject> {
 
   createReducer<A extends { type: string; payload?: any }>() {
     return (state: S, action: A) => {
-      const [namespace, method, key, ...rest] = action.type.split('/');
+      const segments = action.type.split('/');
 
-      if (namespace !== this.namespace || !method || !key || rest.length > 0) {
+      if (segments.length !== 3) {
+        return state;
+      }
+
+      const [namespace, method, key] = segments;
+
+      if (namespace !== this.namespace) {
         return state;
       }
 

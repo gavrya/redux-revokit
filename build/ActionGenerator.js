@@ -47,8 +47,12 @@ var ActionGenerator = /** @class */ (function () {
         var _this = this;
         return function (state, action) {
             var _a;
-            var _b = action.type.split('/'), namespace = _b[0], method = _b[1], key = _b[2], rest = _b.slice(3);
-            if (namespace !== _this.namespace || !method || !key || rest.length > 0) {
+            var segments = action.type.split('/');
+            if (segments.length !== 3) {
+                return state;
+            }
+            var namespace = segments[0], method = segments[1], key = segments[2];
+            if (namespace !== _this.namespace) {
                 return state;
             }
             if (method === PROP && hasOwnProp(state, key)) {
