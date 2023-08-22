@@ -1,6 +1,5 @@
-import type { createTopicMiddleware } from './topicMiddleware';
 import { combineTopics } from './topicMiddleware';
-import type { Topic } from './types/topicMiddleware';
+import type { Topic, TopicMiddleware } from './types/topicMiddleware';
 import type { Store } from 'redux';
 
 const TOPIC_INJECTED = '@topicMiddleware/TOPIC_INJECTED';
@@ -9,10 +8,7 @@ const TOPIC_EJECTED = '@topicMiddleware/TOPIC_EJECTED';
 const topicInjectedAction = () => ({ type: TOPIC_INJECTED });
 const topicEjectedAction = () => ({ type: TOPIC_EJECTED });
 
-const hotTopics = (
-  store: Store,
-  topicMiddleware: ReturnType<typeof createTopicMiddleware>,
-) => {
+const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
   const topics: Record<string, Topic> = {};
   let rootTopic: Topic | null = null;
 

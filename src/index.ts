@@ -14,4 +14,9 @@ export type {
   ActionsFromActionCreators,
 } from './types/actionGenerator';
 
-export type { TopicProps, Topic, Effect } from './types/topicMiddleware';
+export type {
+  TopicProps,
+  Topic,
+  Effect,
+  TopicMiddleware,
+} from './types/topicMiddleware';
