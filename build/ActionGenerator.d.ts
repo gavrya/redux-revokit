@@ -20,7 +20,7 @@ declare class ActionGenerator<N extends string, S extends DataObject> {
     createReducer<A extends {
         type: string;
         payload?: any;
-    }>(): (state: S, action: A) => S;
+    }>(): (state: S | undefined, action: A) => S;
     createHoc<A extends ActionCreatorsMapObject>(actionCreators: A): import("react-redux").InferableComponentEnhancerWithProps<{
         state: S;
     } & {

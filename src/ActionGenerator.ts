@@ -55,7 +55,8 @@ class ActionGenerator<N extends string, S extends DataObject> {
   }
 
   createReducer<A extends { type: string; payload?: any }>() {
-    return (state: S, action: A) => {
+    // eslint-disable-next-line @typescript-eslint/default-param-last
+    return (state: S = this.initialState, action: A) => {
       const segments = action.type.split('/');
 
       if (segments.length !== 3) {

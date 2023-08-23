@@ -45,8 +45,10 @@ var ActionGenerator = /** @class */ (function () {
     };
     ActionGenerator.prototype.createReducer = function () {
         var _this = this;
+        // eslint-disable-next-line @typescript-eslint/default-param-last
         return function (state, action) {
             var _a;
+            if (state === void 0) { state = _this.initialState; }
             var segments = action.type.split('/');
             if (segments.length !== 3) {
                 return state;
