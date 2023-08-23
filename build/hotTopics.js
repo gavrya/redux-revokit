@@ -1,28 +1,35 @@
-import { combineTopics } from './topicMiddleware';
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var TOPIC_INJECTED = '@topicMiddleware/TOPIC_INJECTED';
 var TOPIC_EJECTED = '@topicMiddleware/TOPIC_EJECTED';
 var topicInjectedAction = function () { return ({ type: TOPIC_INJECTED }); };
 var topicEjectedAction = function () { return ({ type: TOPIC_EJECTED }); };
 var hotTopics = function (store, topicMiddleware) {
-    var topics = {};
-    var rootTopic = null;
+    var topicMap = {};
+    var rootTopics;
     var replaceRootTopic = function () {
-        if (rootTopic) {
+        if (rootTopics && rootTopics.length > 0) {
             store.dispatch(topicEjectedAction());
         }
-        var newTopics = Object.values(topics);
-        rootTopic = combineTopics.apply(void 0, newTopics);
-        topicMiddleware.run(rootTopic);
-        if (newTopics.length > 0) {
+        rootTopics = Object.values(topicMap).reduce(function (all, topics) { return __spreadArray(__spreadArray([], all, true), topics, true); }, []);
+        topicMiddleware.run(rootTopics);
+        if (rootTopics.length > 0) {
             store.dispatch(topicInjectedAction());
         }
     };
-    var injectTopic = function (name, topic) {
-        topics[name] = topic;
+    var injectTopic = function (name, topics) {
+        topicMap[name] = topics;
         replaceRootTopic();
     };
     var ejectTopic = function (name) {
-        delete topics[name];
+        delete topicMap[name];
         replaceRootTopic();
     };
     return {

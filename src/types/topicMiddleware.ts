@@ -6,18 +6,15 @@ type TopicProps<A extends Action = AnyAction, S = any> = {
   dispatch: Dispatch;
 };
 
-type Topic<A extends Action = AnyAction, S = any> = (
-  props: TopicProps<A, S>,
-) => void | Promise<any>;
-
-type RootTopic = Topic & {
-  isEjected?: boolean;
-};
+interface Topic<A extends Action = AnyAction, S = any> {
+  (props: TopicProps<A, S>): void | Promise<any>;
+  inputTypes: string[];
+}
 
 type Effect = () => void | Promise<any>;
 
-type MiddlewareRun = { run: (topic: Topic) => void };
+type MiddlewareRun = { run: (topics: Topic[]) => void };
 
 type TopicMiddleware = Middleware & MiddlewareRun;
 
-export type { TopicProps, Topic, RootTopic, Effect, TopicMiddleware };
+export type { TopicProps, Topic, Effect, TopicMiddleware };

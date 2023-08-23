@@ -1,25 +1,13 @@
 import type { AnyAction, Dispatch } from 'redux';
-import type {
-  TopicProps,
-  Topic,
-  RootTopic,
-  TopicMiddleware,
-} from './types/topicMiddleware';
-
-const runTopic = (props: TopicProps) => (topic: Topic) =>
-  Promise.resolve(topic(props));
-
-const combineTopics =
-  (...topics: Topic[]) =>
-  (props: TopicProps) =>
-    Promise.all(topics.map(runTopic(props)));
+import type { Topic, TopicMiddleware } from './types/topicMiddleware';
+import { TopicRunner } from './TopicRunner';
 
 const createFakeDispatch =
-  (topic: RootTopic, dispatch: Dispatch) => (action: AnyAction) =>
-    topic.isEjected ? action : dispatch(action);
+  (topicRunner: TopicRunner, dispatch: Dispatch) => (action: AnyAction) =>
+    topicRunner.isEjected() ? action : dispatch(action);
 
 const createTopicMiddleware = () => {
-  let rootTopic: RootTopic | null = null;
+  let topicRunner: TopicRunner | undefined;
 
   const middleware: TopicMiddleware =
     ({ dispatch, getState }) =>
@@ -27,30 +15,28 @@ const createTopicMiddleware = () => {
     (action: AnyAction) => {
       next(action);
 
-      if (rootTopic) {
+      if (topicRunner) {
         const topicProps = {
           action,
           getState,
-          dispatch: createFakeDispatch(rootTopic, dispatch) as Dispatch,
+          dispatch: createFakeDispatch(topicRunner, dispatch) as Dispatch,
         };
 
-        runTopic(topicProps)(rootTopic);
+        topicRunner.run(action.type, topicProps).catch((error) => {
+          throw error;
+        });
       }
     };
 
-  middleware.run = (topic: Topic) => {
-    if (!topic) {
-      throw new Error('Invalid root topic');
+  middleware.run = (topics: Topic[]) => {
+    if (topicRunner) {
+      topicRunner.eject();
     }
 
-    if (rootTopic) {
-      rootTopic.isEjected = true;
-    }
-
-    rootTopic = topic;
+    topicRunner = new TopicRunner(topics);
   };
 
   return middleware;
 };
 
-export { runTopic, combineTopics, createFakeDispatch, createTopicMiddleware };
+export { createFakeDispatch, createTopicMiddleware };

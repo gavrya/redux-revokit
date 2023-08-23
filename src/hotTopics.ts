@@ -1,4 +1,3 @@
-import { combineTopics } from './topicMiddleware';
 import type { Topic, TopicMiddleware } from './types/topicMiddleware';
 import type { Store } from 'redux';
 
@@ -9,31 +8,33 @@ const topicInjectedAction = () => ({ type: TOPIC_INJECTED });
 const topicEjectedAction = () => ({ type: TOPIC_EJECTED });
 
 const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
-  const topics: Record<string, Topic> = {};
-  let rootTopic: Topic | null = null;
+  const topicMap: Record<string, Topic[]> = {};
+  let rootTopics: Topic[] | undefined;
 
   const replaceRootTopic = () => {
-    if (rootTopic) {
+    if (rootTopics && rootTopics.length > 0) {
       store.dispatch(topicEjectedAction());
     }
 
-    const newTopics = Object.values(topics);
-    rootTopic = combineTopics(...newTopics);
+    rootTopics = Object.values(topicMap).reduce(
+      (all, topics) => [...all, ...topics],
+      [],
+    );
 
-    topicMiddleware.run(rootTopic);
+    topicMiddleware.run(rootTopics);
 
-    if (newTopics.length > 0) {
+    if (rootTopics.length > 0) {
       store.dispatch(topicInjectedAction());
     }
   };
 
-  const injectTopic = (name: string, topic: Topic) => {
-    topics[name] = topic;
+  const injectTopic = (name: string, topics: Topic[]) => {
+    topicMap[name] = topics;
     replaceRootTopic();
   };
 
   const ejectTopic = (name: string) => {
-    delete topics[name];
+    delete topicMap[name];
     replaceRootTopic();
   };
 

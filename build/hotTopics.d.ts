@@ -3,7 +3,7 @@ import type { Store } from 'redux';
 declare const TOPIC_INJECTED = "@topicMiddleware/TOPIC_INJECTED";
 declare const TOPIC_EJECTED = "@topicMiddleware/TOPIC_EJECTED";
 declare const hotTopics: (store: Store, topicMiddleware: TopicMiddleware) => {
-    injectTopic: (name: string, topic: Topic) => void;
+    injectTopic: (name: string, topics: Topic[]) => void;
     ejectTopic: (name: string) => void;
 };
 export { hotTopics, TOPIC_INJECTED, TOPIC_EJECTED };
