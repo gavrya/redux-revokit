@@ -24,17 +24,17 @@ var hotTopics = function (store, topicMiddleware) {
             store.dispatch(topicInjectedAction());
         }
     };
-    var injectTopic = function (name, topics) {
+    var injectTopics = function (name, topics) {
         topicMap[name] = topics;
         replaceRootTopic();
     };
-    var ejectTopic = function (name) {
+    var ejectTopics = function (name) {
         delete topicMap[name];
         replaceRootTopic();
     };
     return {
-        injectTopic: injectTopic,
-        ejectTopic: ejectTopic,
+        injectTopics: injectTopics,
+        ejectTopics: ejectTopics,
     };
 };
 export { hotTopics, TOPIC_INJECTED, TOPIC_EJECTED };

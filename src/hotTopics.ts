@@ -28,19 +28,19 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
     }
   };
 
-  const injectTopic = (name: string, topics: Topic[]) => {
+  const injectTopics = (name: string, topics: Topic[]) => {
     topicMap[name] = topics;
     replaceRootTopic();
   };
 
-  const ejectTopic = (name: string) => {
+  const ejectTopics = (name: string) => {
     delete topicMap[name];
     replaceRootTopic();
   };
 
   return {
-    injectTopic,
-    ejectTopic,
+    injectTopics,
+    ejectTopics,
   };
 };
 
