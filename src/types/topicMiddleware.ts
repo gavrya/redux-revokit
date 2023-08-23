@@ -1,12 +1,14 @@
-import type { AnyAction, Dispatch, Store, Middleware } from 'redux';
+import type { Action, AnyAction, Dispatch, Middleware } from 'redux';
 
-type TopicProps = {
-  action: AnyAction;
+type TopicProps<A extends Action = AnyAction, S = any> = {
+  action: A;
+  getState: () => S;
   dispatch: Dispatch;
-  getState: Store['getState'];
 };
 
-type Topic = (props: TopicProps) => void | Promise<any>;
+type Topic<A extends Action = AnyAction, S = any> = (
+  props: TopicProps<A, S>,
+) => void | Promise<any>;
 
 type RootTopic = Topic & {
   isEjected?: boolean;
@@ -14,8 +16,8 @@ type RootTopic = Topic & {
 
 type Effect = () => void | Promise<any>;
 
-type RunTopic = { run: (topic: Topic) => void };
+type MiddlewareRun = { run: (topic: Topic) => void };
 
-type TopicMiddleware = Middleware & RunTopic;
+type TopicMiddleware = Middleware & MiddlewareRun;
 
 export type { TopicProps, Topic, RootTopic, Effect, TopicMiddleware };
