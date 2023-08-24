@@ -15,16 +15,16 @@ class TopicRunner {
     this.topicsMap.clear();
   }
 
-  async run(actionType: string, topicProps: TopicProps) {
+  run(actionType: string, topicProps: TopicProps): Promise<void> {
     const topics = this.topicsMap.get(actionType);
 
     if (!topics) {
-      return;
+      return Promise.resolve();
     }
 
     const promises = topics.map((topic) => Promise.resolve(topic(topicProps)));
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => Promise.resolve());
   }
 
   private register(topics: Topic[]) {

@@ -4,7 +4,7 @@ declare class TopicRunner {
     constructor(topics: Topic[]);
     isEjected(): boolean;
     eject(): void;
-    run(actionType: string, topicProps: TopicProps): Promise<any[] | undefined>;
+    run(actionType: string, topicProps: TopicProps): Promise<void>;
     private register;
 }
 export { TopicRunner };
