@@ -1,6 +1,6 @@
 import type { Topic, TopicProps } from './types/topicMiddleware';
 declare class TopicRunner {
-    private topicMap;
+    private topicsMap;
     constructor(topics: Topic[]);
     isEjected(): boolean;
     eject(): void;

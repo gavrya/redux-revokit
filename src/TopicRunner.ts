@@ -1,22 +1,22 @@
 import type { Topic, TopicProps } from './types/topicMiddleware';
 
 class TopicRunner {
-  private topicMap = new Map<string, Topic[]>();
+  private topicsMap = new Map<string, Topic[]>();
 
   constructor(topics: Topic[]) {
     this.register(topics);
   }
 
   isEjected() {
-    return this.topicMap.size === 0;
+    return this.topicsMap.size === 0;
   }
 
   eject() {
-    this.topicMap.clear();
+    this.topicsMap.clear();
   }
 
   async run(actionType: string, topicProps: TopicProps) {
-    const topics = this.topicMap.get(actionType);
+    const topics = this.topicsMap.get(actionType);
 
     if (!topics) {
       return;
@@ -29,11 +29,17 @@ class TopicRunner {
 
   private register(topics: Topic[]) {
     topics.forEach((topic) => {
+      if (!topic.inputTypes) {
+        // eslint-disable-next-line no-console
+        console.warn('Topic must have "inputTypes" property');
+        return;
+      }
+
       topic.inputTypes.forEach((inputType) => {
-        const oldTopics = this.topicMap.get(inputType);
+        const oldTopics = this.topicsMap.get(inputType);
         const newTopics = oldTopics ? [...oldTopics, topic] : [topic];
 
-        this.topicMap.set(inputType, newTopics);
+        this.topicsMap.set(inputType, newTopics);
       });
     });
   }

@@ -10,21 +10,18 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 import { combineReducers } from 'redux';
-import { hasOwnProp } from './utils';
 var hotReducers = function (store, staticReducers) {
-    var reducers = __assign({}, staticReducers);
+    var reducersMap = __assign({}, staticReducers);
     var replaceReducers = function () {
-        store.replaceReducer(combineReducers(reducers));
+        store.replaceReducer(combineReducers(reducersMap));
     };
     var injectReducer = function (name, reducer) {
-        reducers[name] = reducer;
+        reducersMap[name] = reducer;
         replaceReducers();
     };
     var ejectReducer = function (name) {
-        if (hasOwnProp(reducers, name)) {
-            delete reducers[name];
-            replaceReducers();
-        }
+        delete reducersMap[name];
+        replaceReducers();
     };
     return {
         injectReducer: injectReducer,

@@ -8,7 +8,7 @@ const topicInjectedAction = () => ({ type: TOPIC_INJECTED });
 const topicEjectedAction = () => ({ type: TOPIC_EJECTED });
 
 const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
-  const topicMap: Record<string, Topic[]> = {};
+  const topicsMap: Record<string, Topic[]> = {};
   let rootTopics: Topic[] | undefined;
 
   const replaceRootTopic = () => {
@@ -16,7 +16,7 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
       store.dispatch(topicEjectedAction());
     }
 
-    rootTopics = Object.values(topicMap).reduce(
+    rootTopics = Object.values(topicsMap).reduce(
       (all, topics) => [...all, ...topics],
       [],
     );
@@ -29,12 +29,12 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
   };
 
   const injectTopics = (name: string, topics: Topic[]) => {
-    topicMap[name] = topics;
+    topicsMap[name] = topics;
     replaceRootTopic();
   };
 
   const ejectTopics = (name: string) => {
-    delete topicMap[name];
+    delete topicsMap[name];
     replaceRootTopic();
   };
 

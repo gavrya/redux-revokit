@@ -1,24 +1,21 @@
 import { combineReducers } from 'redux';
 import type { Store, Reducer, ReducersMapObject } from 'redux';
-import { hasOwnProp } from './utils';
 
 const hotReducers = (store: Store, staticReducers?: ReducersMapObject) => {
-  const reducers: ReducersMapObject = { ...staticReducers };
+  const reducersMap: ReducersMapObject = { ...staticReducers };
 
   const replaceReducers = () => {
-    store.replaceReducer(combineReducers(reducers));
+    store.replaceReducer(combineReducers(reducersMap));
   };
 
   const injectReducer = (name: string, reducer: Reducer) => {
-    reducers[name] = reducer;
+    reducersMap[name] = reducer;
     replaceReducers();
   };
 
   const ejectReducer = (name: string) => {
-    if (hasOwnProp(reducers, name)) {
-      delete reducers[name];
-      replaceReducers();
-    }
+    delete reducersMap[name];
+    replaceReducers();
   };
 
   return {

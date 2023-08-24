@@ -45,20 +45,20 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 var TopicRunner = /** @class */ (function () {
     function TopicRunner(topics) {
-        this.topicMap = new Map();
+        this.topicsMap = new Map();
         this.register(topics);
     }
     TopicRunner.prototype.isEjected = function () {
-        return this.topicMap.size === 0;
+        return this.topicsMap.size === 0;
     };
     TopicRunner.prototype.eject = function () {
-        this.topicMap.clear();
+        this.topicsMap.clear();
     };
     TopicRunner.prototype.run = function (actionType, topicProps) {
         return __awaiter(this, void 0, void 0, function () {
             var topics, promises;
             return __generator(this, function (_a) {
-                topics = this.topicMap.get(actionType);
+                topics = this.topicsMap.get(actionType);
                 if (!topics) {
                     return [2 /*return*/];
                 }
@@ -70,10 +70,15 @@ var TopicRunner = /** @class */ (function () {
     TopicRunner.prototype.register = function (topics) {
         var _this = this;
         topics.forEach(function (topic) {
+            if (!topic.inputTypes) {
+                // eslint-disable-next-line no-console
+                console.warn('Topic must have "inputTypes" property');
+                return;
+            }
             topic.inputTypes.forEach(function (inputType) {
-                var oldTopics = _this.topicMap.get(inputType);
+                var oldTopics = _this.topicsMap.get(inputType);
                 var newTopics = oldTopics ? __spreadArray(__spreadArray([], oldTopics, true), [topic], false) : [topic];
-                _this.topicMap.set(inputType, newTopics);
+                _this.topicsMap.set(inputType, newTopics);
             });
         });
     };

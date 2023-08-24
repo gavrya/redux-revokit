@@ -12,24 +12,24 @@ var TOPIC_EJECTED = '@topicMiddleware/TOPIC_EJECTED';
 var topicInjectedAction = function () { return ({ type: TOPIC_INJECTED }); };
 var topicEjectedAction = function () { return ({ type: TOPIC_EJECTED }); };
 var hotTopics = function (store, topicMiddleware) {
-    var topicMap = {};
+    var topicsMap = {};
     var rootTopics;
     var replaceRootTopic = function () {
         if (rootTopics && rootTopics.length > 0) {
             store.dispatch(topicEjectedAction());
         }
-        rootTopics = Object.values(topicMap).reduce(function (all, topics) { return __spreadArray(__spreadArray([], all, true), topics, true); }, []);
+        rootTopics = Object.values(topicsMap).reduce(function (all, topics) { return __spreadArray(__spreadArray([], all, true), topics, true); }, []);
         topicMiddleware.run(rootTopics);
         if (rootTopics.length > 0) {
             store.dispatch(topicInjectedAction());
         }
     };
     var injectTopics = function (name, topics) {
-        topicMap[name] = topics;
+        topicsMap[name] = topics;
         replaceRootTopic();
     };
     var ejectTopics = function (name) {
-        delete topicMap[name];
+        delete topicsMap[name];
         replaceRootTopic();
     };
     return {
