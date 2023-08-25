@@ -1,13 +1,13 @@
 import type { AnyAction, Dispatch } from 'redux';
 import type { Topic, TopicMiddleware } from './types/topicMiddleware';
-import { TopicRunner } from './TopicRunner';
+import { TopicsRunner } from './TopicsRunner';
 
 const createFakeDispatch =
-  (topicRunner: TopicRunner, dispatch: Dispatch) => (action: AnyAction) =>
-    topicRunner.isEjected() ? action : dispatch(action);
+  (topicsRunner: TopicsRunner, dispatch: Dispatch) => (action: AnyAction) =>
+    topicsRunner.isEjected() ? action : dispatch(action);
 
 const createTopicMiddleware = () => {
-  let topicRunner: TopicRunner | undefined;
+  let topicsRunner: TopicsRunner | undefined;
 
   const middleware: TopicMiddleware =
     ({ dispatch, getState }) =>
@@ -15,25 +15,25 @@ const createTopicMiddleware = () => {
     (action: AnyAction) => {
       next(action);
 
-      if (topicRunner) {
+      if (topicsRunner) {
         const topicProps = {
           action,
           getState,
-          dispatch: createFakeDispatch(topicRunner, dispatch) as Dispatch,
+          dispatch: createFakeDispatch(topicsRunner, dispatch) as Dispatch,
         };
 
-        topicRunner.run(action.type, topicProps).catch((error) => {
+        topicsRunner.run(action.type, topicProps).catch((error) => {
           throw error;
         });
       }
     };
 
   middleware.run = (topics: Topic[]) => {
-    if (topicRunner) {
-      topicRunner.eject();
+    if (topicsRunner) {
+      topicsRunner.eject();
     }
 
-    topicRunner = new TopicRunner(topics);
+    topicsRunner = new TopicsRunner(topics);
   };
 
   return middleware;

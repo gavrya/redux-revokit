@@ -1,5 +1,5 @@
 import type { Topic, TopicProps } from './types/topicMiddleware';
-declare class TopicRunner {
+declare class TopicsRunner {
     private topicsMap;
     constructor(topics: Topic[]);
     isEjected(): boolean;
@@ -7,4 +7,4 @@ declare class TopicRunner {
     run(actionType: string, topicProps: TopicProps): Promise<void>;
     private registerTopics;
 }
-export { TopicRunner };
+export { TopicsRunner };

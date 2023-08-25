@@ -1,8 +1,8 @@
 import type { Topic, TopicProps } from './types/topicMiddleware';
 
-const ANY_ACTION_TYPE = '*';
+const ANY_ACTION_TYPE = '*/*/*';
 
-class TopicRunner {
+class TopicsRunner {
   private topicsMap = new Map<string, Topic[]>();
 
   constructor(topics: Topic[]) {
@@ -17,18 +17,18 @@ class TopicRunner {
     this.topicsMap.clear();
   }
 
-  run(actionType: string, topicProps: TopicProps): Promise<void> {
+  async run(actionType: string, topicProps: TopicProps) {
     const topicsByActionType = this.topicsMap.get(actionType) || [];
     const topicsByAnyActionType = this.topicsMap.get(ANY_ACTION_TYPE) || [];
     const topics = [...topicsByActionType, ...topicsByAnyActionType];
 
     if (topics.length === 0) {
-      return Promise.resolve();
+      return;
     }
 
     const promises = topics.map((topic) => Promise.resolve(topic(topicProps)));
 
-    return Promise.all(promises).then(() => Promise.resolve());
+    await Promise.all(promises);
   }
 
   private registerTopics(topics: Topic[]) {
@@ -44,4 +44,4 @@ class TopicRunner {
   }
 }
 
-export { TopicRunner };
+export { TopicsRunner };

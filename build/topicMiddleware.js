@@ -1,21 +1,21 @@
-import { TopicRunner } from './TopicRunner';
-var createFakeDispatch = function (topicRunner, dispatch) { return function (action) {
-    return topicRunner.isEjected() ? action : dispatch(action);
+import { TopicsRunner } from './TopicsRunner';
+var createFakeDispatch = function (topicsRunner, dispatch) { return function (action) {
+    return topicsRunner.isEjected() ? action : dispatch(action);
 }; };
 var createTopicMiddleware = function () {
-    var topicRunner;
+    var topicsRunner;
     var middleware = function (_a) {
         var dispatch = _a.dispatch, getState = _a.getState;
         return function (next) {
             return function (action) {
                 next(action);
-                if (topicRunner) {
+                if (topicsRunner) {
                     var topicProps = {
                         action: action,
                         getState: getState,
-                        dispatch: createFakeDispatch(topicRunner, dispatch),
+                        dispatch: createFakeDispatch(topicsRunner, dispatch),
                     };
-                    topicRunner.run(action.type, topicProps).catch(function (error) {
+                    topicsRunner.run(action.type, topicProps).catch(function (error) {
                         throw error;
                     });
                 }
@@ -23,10 +23,10 @@ var createTopicMiddleware = function () {
         };
     };
     middleware.run = function (topics) {
-        if (topicRunner) {
-            topicRunner.eject();
+        if (topicsRunner) {
+            topicsRunner.eject();
         }
-        topicRunner = new TopicRunner(topics);
+        topicsRunner = new TopicsRunner(topics);
     };
     return middleware;
 };

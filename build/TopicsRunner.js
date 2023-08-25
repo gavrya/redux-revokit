@@ -34,41 +34,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { TopicsRunner } from './TopicsRunner';
-var hasOwnProp = function (object, prop) {
-    return Object.prototype.hasOwnProperty.call(object, prop);
-};
-var ofType = function (action) {
-    var types = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        types[_i - 1] = arguments[_i];
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
     }
-    return types.includes(action.type);
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
-var createSwitchEffect = function () {
-    var callId = {};
-    return function (name) {
-        if (name === void 0) { name = 'default'; }
-        var newCallId = {};
-        callId[name] = newCallId;
-        return function (effect) {
-            if (newCallId === callId[name]) {
-                return effect();
-            }
-        };
+var ANY_ACTION_TYPE = '*/*/*';
+var TopicsRunner = /** @class */ (function () {
+    function TopicsRunner(topics) {
+        this.topicsMap = new Map();
+        this.registerTopics(topics);
+    }
+    TopicsRunner.prototype.isEjected = function () {
+        return this.topicsMap.size === 0;
     };
-};
-var createRunTopics = function (topics) { return function () {
-    var topicsRunner = new TopicsRunner(topics);
-    return function (actionType, topicProps) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, topicsRunner.run(actionType, topicProps)];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
+    TopicsRunner.prototype.eject = function () {
+        this.topicsMap.clear();
+    };
+    TopicsRunner.prototype.run = function (actionType, topicProps) {
+        return __awaiter(this, void 0, void 0, function () {
+            var topicsByActionType, topicsByAnyActionType, topics, promises;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        topicsByActionType = this.topicsMap.get(actionType) || [];
+                        topicsByAnyActionType = this.topicsMap.get(ANY_ACTION_TYPE) || [];
+                        topics = __spreadArray(__spreadArray([], topicsByActionType, true), topicsByAnyActionType, true);
+                        if (topics.length === 0) {
+                            return [2 /*return*/];
+                        }
+                        promises = topics.map(function (topic) { return Promise.resolve(topic(topicProps)); });
+                        return [4 /*yield*/, Promise.all(promises)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
         });
-    }); };
-}; };
-export { hasOwnProp, ofType, createSwitchEffect, createRunTopics };
+    };
+    TopicsRunner.prototype.registerTopics = function (topics) {
+        var _this = this;
+        topics.forEach(function (topic) {
+            var actionTypes = topic.inputActionTypes || [ANY_ACTION_TYPE];
+            actionTypes.forEach(function (actionType) {
+                var addedTopics = _this.topicsMap.get(actionType) || [];
+                _this.topicsMap.set(actionType, __spreadArray(__spreadArray([], addedTopics, true), [topic], false));
+            });
+        });
+    };
+    return TopicsRunner;
+}());
+export { TopicsRunner };
