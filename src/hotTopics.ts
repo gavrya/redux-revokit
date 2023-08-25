@@ -1,11 +1,11 @@
 import type { Topic, TopicMiddleware } from './types/topicMiddleware';
 import type { Store } from 'redux';
 
-const TOPIC_INJECTED = '@topicMiddleware/TOPIC_INJECTED';
-const TOPIC_EJECTED = '@topicMiddleware/TOPIC_EJECTED';
+const TOPICS_INJECTED = '@topicMiddleware/TOPICS_INJECTED';
+const TOPICS_EJECTED = '@topicMiddleware/TOPICS_EJECTED';
 
-const topicInjectedAction = () => ({ type: TOPIC_INJECTED });
-const topicEjectedAction = () => ({ type: TOPIC_EJECTED });
+const topicsInjectedAction = () => ({ type: TOPICS_INJECTED });
+const topicsEjectedAction = () => ({ type: TOPICS_EJECTED });
 
 const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
   const topicsMap: Record<string, Topic[]> = {};
@@ -13,7 +13,7 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
 
   const replaceRootTopic = () => {
     if (rootTopics && rootTopics.length > 0) {
-      store.dispatch(topicEjectedAction());
+      store.dispatch(topicsEjectedAction());
     }
 
     rootTopics = Object.values(topicsMap).reduce(
@@ -24,7 +24,7 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
     topicMiddleware.run(rootTopics);
 
     if (rootTopics.length > 0) {
-      store.dispatch(topicInjectedAction());
+      store.dispatch(topicsInjectedAction());
     }
   };
 
@@ -44,4 +44,4 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
   };
 };
 
-export { hotTopics, TOPIC_INJECTED, TOPIC_EJECTED };
+export { hotTopics, TOPICS_INJECTED, TOPICS_EJECTED };

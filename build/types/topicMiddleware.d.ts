@@ -6,7 +6,7 @@ type TopicProps<A extends Action = AnyAction, S = any> = {
 };
 interface Topic<A extends Action = AnyAction, S = any> {
     (props: TopicProps<A, S>): void | Promise<any>;
-    inputTypes: string[];
+    inputActionTypes?: string[];
 }
 type Effect = () => void | Promise<any>;
 type MiddlewareRun = {

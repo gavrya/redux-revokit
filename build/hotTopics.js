@@ -7,21 +7,21 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-var TOPIC_INJECTED = '@topicMiddleware/TOPIC_INJECTED';
-var TOPIC_EJECTED = '@topicMiddleware/TOPIC_EJECTED';
-var topicInjectedAction = function () { return ({ type: TOPIC_INJECTED }); };
-var topicEjectedAction = function () { return ({ type: TOPIC_EJECTED }); };
+var TOPICS_INJECTED = '@topicMiddleware/TOPICS_INJECTED';
+var TOPICS_EJECTED = '@topicMiddleware/TOPICS_EJECTED';
+var topicsInjectedAction = function () { return ({ type: TOPICS_INJECTED }); };
+var topicsEjectedAction = function () { return ({ type: TOPICS_EJECTED }); };
 var hotTopics = function (store, topicMiddleware) {
     var topicsMap = {};
     var rootTopics;
     var replaceRootTopic = function () {
         if (rootTopics && rootTopics.length > 0) {
-            store.dispatch(topicEjectedAction());
+            store.dispatch(topicsEjectedAction());
         }
         rootTopics = Object.values(topicsMap).reduce(function (all, topics) { return __spreadArray(__spreadArray([], all, true), topics, true); }, []);
         topicMiddleware.run(rootTopics);
         if (rootTopics.length > 0) {
-            store.dispatch(topicInjectedAction());
+            store.dispatch(topicsInjectedAction());
         }
     };
     var injectTopics = function (name, topics) {
@@ -37,4 +37,4 @@ var hotTopics = function (store, topicMiddleware) {
         ejectTopics: ejectTopics,
     };
 };
-export { hotTopics, TOPIC_INJECTED, TOPIC_EJECTED };
+export { hotTopics, TOPICS_INJECTED, TOPICS_EJECTED };

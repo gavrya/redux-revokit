@@ -1,5 +1,7 @@
 import type { Topic, TopicProps } from './types/topicMiddleware';
 
+const ANY_ACTION_TYPE = '___ANY_ACTION_TYPE___';
+
 class TopicRunner {
   private topicsMap = new Map<string, Topic[]>();
 
@@ -16,9 +18,11 @@ class TopicRunner {
   }
 
   run(actionType: string, topicProps: TopicProps): Promise<void> {
-    const topics = this.topicsMap.get(actionType);
+    const topicsByActionType = this.topicsMap.get(actionType) || [];
+    const topicsByAnyActionType = this.topicsMap.get(ANY_ACTION_TYPE) || [];
+    const topics = [...topicsByActionType, ...topicsByAnyActionType];
 
-    if (!topics) {
+    if (topics.length === 0) {
       return Promise.resolve();
     }
 
@@ -29,19 +33,19 @@ class TopicRunner {
 
   private register(topics: Topic[]) {
     topics.forEach((topic) => {
-      if (!topic.inputTypes) {
-        // eslint-disable-next-line no-console
-        console.warn('Topic must have "inputTypes" property');
-        return;
-      }
+      const actionTypes = topic.inputActionTypes || [ANY_ACTION_TYPE];
 
-      topic.inputTypes.forEach((inputType) => {
-        const oldTopics = this.topicsMap.get(inputType);
-        const newTopics = oldTopics ? [...oldTopics, topic] : [topic];
-
-        this.topicsMap.set(inputType, newTopics);
+      actionTypes.forEach((actionType) => {
+        this.registerTopic(actionType, topic);
       });
     });
+  }
+
+  private registerTopic(actionType: string, topic: Topic) {
+    const existedTopics = this.topicsMap.get(actionType);
+    const topics = existedTopics ? [...existedTopics, topic] : [topic];
+
+    this.topicsMap.set(actionType, topics);
   }
 }
 
