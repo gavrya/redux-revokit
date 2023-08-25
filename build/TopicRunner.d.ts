@@ -5,7 +5,6 @@ declare class TopicRunner {
     isEjected(): boolean;
     eject(): void;
     run(actionType: string, topicProps: TopicProps): Promise<void>;
-    private register;
-    private registerTopic;
+    private registerTopics;
 }
 export { TopicRunner };

@@ -7,11 +7,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-var ANY_ACTION_TYPE = '___ANY_ACTION_TYPE___';
+var ANY_ACTION_TYPE = '*';
 var TopicRunner = /** @class */ (function () {
     function TopicRunner(topics) {
         this.topicsMap = new Map();
-        this.register(topics);
+        this.registerTopics(topics);
     }
     TopicRunner.prototype.isEjected = function () {
         return this.topicsMap.size === 0;
@@ -29,19 +29,15 @@ var TopicRunner = /** @class */ (function () {
         var promises = topics.map(function (topic) { return Promise.resolve(topic(topicProps)); });
         return Promise.all(promises).then(function () { return Promise.resolve(); });
     };
-    TopicRunner.prototype.register = function (topics) {
+    TopicRunner.prototype.registerTopics = function (topics) {
         var _this = this;
         topics.forEach(function (topic) {
             var actionTypes = topic.inputActionTypes || [ANY_ACTION_TYPE];
             actionTypes.forEach(function (actionType) {
-                _this.registerTopic(actionType, topic);
+                var addedTopics = _this.topicsMap.get(actionType) || [];
+                _this.topicsMap.set(actionType, __spreadArray(__spreadArray([], addedTopics, true), [topic], false));
             });
         });
-    };
-    TopicRunner.prototype.registerTopic = function (actionType, topic) {
-        var existedTopics = this.topicsMap.get(actionType);
-        var topics = existedTopics ? __spreadArray(__spreadArray([], existedTopics, true), [topic], false) : [topic];
-        this.topicsMap.set(actionType, topics);
     };
     return TopicRunner;
 }());
