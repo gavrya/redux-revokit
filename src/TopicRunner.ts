@@ -2,7 +2,7 @@ import type { Topic, TopicProps } from './types/topicMiddleware';
 
 const ANY_ACTION_TYPE = '*/*/*';
 
-class TopicsRunner {
+class TopicRunner {
   private topicsMap = new Map<string, Topic[]>();
 
   constructor(topics: Topic[]) {
@@ -44,4 +44,4 @@ class TopicsRunner {
   }
 }
 
-export { TopicsRunner };
+export { TopicRunner };

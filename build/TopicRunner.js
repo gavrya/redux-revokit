@@ -44,18 +44,18 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 var ANY_ACTION_TYPE = '*/*/*';
-var TopicsRunner = /** @class */ (function () {
-    function TopicsRunner(topics) {
+var TopicRunner = /** @class */ (function () {
+    function TopicRunner(topics) {
         this.topicsMap = new Map();
         this.registerTopics(topics);
     }
-    TopicsRunner.prototype.isEjected = function () {
+    TopicRunner.prototype.isEjected = function () {
         return this.topicsMap.size === 0;
     };
-    TopicsRunner.prototype.eject = function () {
+    TopicRunner.prototype.eject = function () {
         this.topicsMap.clear();
     };
-    TopicsRunner.prototype.run = function (actionType, topicProps) {
+    TopicRunner.prototype.run = function (actionType, topicProps) {
         return __awaiter(this, void 0, void 0, function () {
             var topicsByActionType, topicsByAnyActionType, topics, promises;
             return __generator(this, function (_a) {
@@ -76,7 +76,7 @@ var TopicsRunner = /** @class */ (function () {
             });
         });
     };
-    TopicsRunner.prototype.registerTopics = function (topics) {
+    TopicRunner.prototype.registerTopics = function (topics) {
         var _this = this;
         topics.forEach(function (topic) {
             var actionTypes = topic.inputActionTypes || [ANY_ACTION_TYPE];
@@ -86,6 +86,6 @@ var TopicsRunner = /** @class */ (function () {
             });
         });
     };
-    return TopicsRunner;
+    return TopicRunner;
 }());
-export { TopicsRunner };
+export { TopicRunner };
