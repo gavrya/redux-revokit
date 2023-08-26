@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { TopicsRunner } from './TopicsRunner';
+import { TopicRunner } from './TopicRunner';
 var hasOwnProp = function (object, prop) {
     return Object.prototype.hasOwnProperty.call(object, prop);
 };
@@ -59,11 +59,11 @@ var createSwitchEffect = function () {
     };
 };
 var createRunTopics = function (topics) { return function () {
-    var topicsRunner = new TopicsRunner(topics);
+    var topicRunner = new TopicRunner(topics);
     return function (actionType, topicProps) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, topicsRunner.run(actionType, topicProps)];
+                case 0: return [4 /*yield*/, topicRunner.run(actionType, topicProps)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
