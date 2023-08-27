@@ -12,7 +12,6 @@ var __assign = (this && this.__assign) || function () {
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { hasOwnProp } from './utils';
 var PROP = 'prop';
 var EVENT = 'event';
 var RESET = 'reset';
@@ -57,7 +56,7 @@ var ActionGenerator = /** @class */ (function () {
             if (namespace !== _this.namespace) {
                 return state;
             }
-            if (method === PROP && hasOwnProp(state, key)) {
+            if (method === PROP && Object.prototype.hasOwnProperty.call(state, key)) {
                 return __assign(__assign({}, state), (_a = {}, _a[key] = action.payload, _a));
             }
             if (method === RESET) {

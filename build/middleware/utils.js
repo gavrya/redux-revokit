@@ -35,9 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { TopicRunner } from './TopicRunner';
-var hasOwnProp = function (object, prop) {
-    return Object.prototype.hasOwnProperty.call(object, prop);
-};
 var ofType = function (action) {
     var types = [];
     for (var _i = 1; _i < arguments.length; _i++) {
@@ -71,4 +68,4 @@ var createRunTopics = function (topics) { return function () {
         });
     }); };
 }; };
-export { hasOwnProp, ofType, createSwitchEffect, createRunTopics };
+export { ofType, createSwitchEffect, createRunTopics };

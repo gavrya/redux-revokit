@@ -1,5 +1,5 @@
 import type { ActionCreatorsMapObject } from 'redux';
-import type { DataObject } from './types/actionGenerator';
+import type { DataObject } from './types';
 declare const PROP = "prop";
 declare const EVENT = "event";
 declare const RESET = "reset";

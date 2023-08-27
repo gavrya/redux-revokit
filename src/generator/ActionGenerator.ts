@@ -2,8 +2,7 @@ import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import type { Dispatch, ActionCreatorsMapObject } from 'redux';
-import type { DataObject } from './types/actionGenerator';
-import { hasOwnProp } from './utils';
+import type { DataObject } from './types';
 
 const PROP = 'prop';
 const EVENT = 'event';
@@ -69,7 +68,7 @@ class ActionGenerator<N extends string, S extends DataObject> {
         return state;
       }
 
-      if (method === PROP && hasOwnProp(state, key)) {
+      if (method === PROP && Object.prototype.hasOwnProperty.call(state, key)) {
         return {
           ...state,
           [key]: action.payload as keyof S,

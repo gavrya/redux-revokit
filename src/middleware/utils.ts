@@ -1,9 +1,6 @@
 import type { AnyAction } from 'redux';
-import type { Effect, TopicProps, Topic } from './types/topicMiddleware';
+import type { Effect, TopicProps, Topic } from './types';
 import { TopicRunner } from './TopicRunner';
-
-const hasOwnProp = (object: Record<string, any>, prop: string): boolean =>
-  Object.prototype.hasOwnProperty.call(object, prop);
 
 const ofType = (action: AnyAction, ...types: string[]) =>
   types.includes(action.type);
@@ -32,4 +29,4 @@ const createRunTopics = (topics: Topic[]) => () => {
   };
 };
 
-export { hasOwnProp, ofType, createSwitchEffect, createRunTopics };
+export { ofType, createSwitchEffect, createRunTopics };

@@ -1,4 +1,4 @@
-import type { Topic, TopicProps } from './types/topicMiddleware';
+import type { Topic, TopicProps } from './types';
 
 const ANY_ACTION_TYPE = '*/*/*';
 

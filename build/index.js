@@ -1,5 +1,2 @@
-export { ActionGenerator } from './ActionGenerator';
-export { createTopicMiddleware } from './topicMiddleware';
-export { hotReducers } from './hotReducers';
-export { hotTopics, TOPICS_INJECTED, TOPICS_EJECTED } from './hotTopics';
-export { ofType, createSwitchEffect, createRunTopics } from './utils';
+export { ActionGenerator, hotReducers } from './generator';
+export { createTopicMiddleware, hotTopics, ofType, createSwitchEffect, createRunTopics, } from './middleware';

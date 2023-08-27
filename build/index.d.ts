@@ -1,7 +1,4 @@
-export { ActionGenerator } from './ActionGenerator';
-export { createTopicMiddleware } from './topicMiddleware';
-export { hotReducers } from './hotReducers';
-export { hotTopics, TOPICS_INJECTED, TOPICS_EJECTED } from './hotTopics';
-export { ofType, createSwitchEffect, createRunTopics } from './utils';
-export type { ObjectValuesUnion, ActionsFromActionCreators, } from './types/actionGenerator';
-export type { Topic, Effect, TopicProps, TopicMiddleware, } from './types/topicMiddleware';
+export { ActionGenerator, hotReducers } from './generator';
+export { createTopicMiddleware, hotTopics, ofType, createSwitchEffect, createRunTopics, } from './middleware';
+export type { ObjectValuesUnion, ActionsFromActionCreators } from './generator';
+export type { TopicProps, Topic, Effect, TopicMiddleware, TopicsInjectedAction, TopicsEjectedAction, } from './middleware';

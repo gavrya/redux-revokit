@@ -30,4 +30,4 @@ var createTopicMiddleware = function () {
     };
     return middleware;
 };
-export { createFakeDispatch, createTopicMiddleware };
+export { createTopicMiddleware };

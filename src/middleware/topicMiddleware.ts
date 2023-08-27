@@ -1,5 +1,5 @@
 import type { AnyAction, Dispatch } from 'redux';
-import type { Topic, TopicMiddleware } from './types/topicMiddleware';
+import type { Topic, TopicMiddleware } from './types';
 import { TopicRunner } from './TopicRunner';
 
 const createFakeDispatch =
@@ -39,4 +39,4 @@ const createTopicMiddleware = () => {
   return middleware;
 };
 
-export { createFakeDispatch, createTopicMiddleware };
+export { createTopicMiddleware };

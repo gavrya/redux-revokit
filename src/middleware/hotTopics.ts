@@ -1,4 +1,4 @@
-import type { Topic, TopicMiddleware } from './types/topicMiddleware';
+import type { Topic, TopicMiddleware } from './types';
 import type { Store } from 'redux';
 
 const TOPICS_INJECTED = '@topicMiddleware/TOPICS_INJECTED';
@@ -45,3 +45,8 @@ const hotTopics = (store: Store, topicMiddleware: TopicMiddleware) => {
 };
 
 export { hotTopics, TOPICS_INJECTED, TOPICS_EJECTED };
+
+type TopicsInjectedAction = ReturnType<typeof topicsInjectedAction>;
+type TopicsEjectedAction = ReturnType<typeof topicsEjectedAction>;
+
+export type { TopicsInjectedAction, TopicsEjectedAction };
